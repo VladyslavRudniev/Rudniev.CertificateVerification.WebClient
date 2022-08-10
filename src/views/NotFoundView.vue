@@ -1,5 +1,7 @@
 <template>
-  <NotFoundMessageBox />
+  <div class="container">
+    <NotFoundMessageBox class="mt15"/>
+  </div>
 </template>
 
 <script>
@@ -14,5 +16,7 @@ export default {
 </script>
 
 <style scoped>
-
+.mt15 {
+  margin-top: 15rem;
+}
 </style>
