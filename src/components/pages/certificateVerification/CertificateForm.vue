@@ -119,7 +119,7 @@ export default {
       }
     },
     async formSubmit() {
-      const result = await fetch('https://localhost:7275/api/certificate', {
+      await fetch('https://localhost:7275/api/certificate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -131,12 +131,20 @@ export default {
           birthdate: this.$refs.inputBirthdateDetails.value,
           certificatenumber: this.$refs.inputQrCodeDetails.value
         })
-      })
-      console.log(result);
-      if (result.statusCode === 200)
-      {
-        window.alert("Дані успішно додано!");
-      }
+      }).then(response => {
+        if (response.ok)
+        {
+          window.alert("Дані успішно додано!");
+        }
+        else
+        {
+          window.alert("Сталась помилка, спробуйте пізніше!");
+          const error = response.statusText;
+          return Promise.reject(error);
+        }
+      }).catch(error => {
+        console.error("<<<ERROR>>>", error);
+      });
     }
   }
 };
