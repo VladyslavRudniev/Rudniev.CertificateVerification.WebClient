@@ -14,21 +14,18 @@
 <script>
 export default {
   name: "Sidebar",
-  props: ["isSearchPage", "isAddPage"],
+  props: ["numberOfSection"],
   data: function (){
     return {
-      searchPage : this.isSearchPage,
-      addPage : this.isAddPage,
+      numberSection : this.numberOfSection,
     }
   },
   methods: {
     OnTabSerchPage() {
-      this.$emit('update:isSearchPage', this.isSearchPage=true);
-      this.$emit('update:isAddPage', this.isAddPage=false);
+      this.$emit('update:numberOfSection', this.numberSection=1);
     },
     OnTabAddPage() {
-      this.$emit('update:isSearchPage', this.isSearchPage=false);
-      this.$emit('update:isAddPage', this.isAddPage=true);
+      this.$emit('update:numberOfSection', this.numberSection=2);
     }
   }
 }

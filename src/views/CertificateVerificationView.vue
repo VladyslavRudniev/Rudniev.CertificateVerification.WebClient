@@ -1,8 +1,8 @@
 <template>
   <div class="row">
-    <sidebar class="col s3 m3 l2 13 sidebar" :isSearchPage.sync="isSearchPage" :isAddPage.sync="isAddPage"/>
-    <CertificateForm class="col s9 m9 l8 19" v-if="isAddPage"/>
-    <certificate-search class="col s9 m9 l8 19" v-if="isSearchPage"/>
+    <sidebar class="col s3 m3 l2 13 sidebar" :numberOfSection.sync="numberOfSection"/>
+    <CertificateForm class="col s9 m9 l8 19" v-if="numberOfSection === 2"/>
+    <CertificateSearch class="col s9 m9 l8 19" v-else-if="numberOfSection === 1"/>
   </div>
 </template>
 
@@ -20,8 +20,7 @@ export default {
   },
   data: function() {
     return {
-      isSearchPage: false,
-      isAddPage: true,
+      numberOfSection: 2,
     }
   }
 }

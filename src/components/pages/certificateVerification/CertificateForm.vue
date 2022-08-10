@@ -3,27 +3,25 @@
 
     <h4>Бланк додавання сертифіката ковід</h4>
 
-    <InputComponent class="col s6" v-bind="inputName" ref="inputNameDetails"/>
-    <InputComponent class="col s6" v-bind="inputSurname" ref="inputSurnameDetails"/>
-    <InputComponent class="col s6" v-bind="inputBirthdate" ref="inputBirthdateDetails"/>
+    <InputComponent class="col s12 m6" v-bind="inputName" ref="inputNameDetails"/>
+    <InputComponent class="col s12 m6" v-bind="inputSurname" ref="inputSurnameDetails"/>
+    <InputComponent class="col s12 m6" v-bind="inputBirthdate" ref="inputBirthdateDetails"/>
 
-    <h5>Відскануйте qr-код</h5>
+    <h5 class="col s12 m12">Відскануйте qr-код</h5>
 
-    <a class="waves-effect waves-light btn mt1" v-on:click="isFormCompleted">Сканувати</a>
-    <h6 class="red-text text-darken-2">{{ massage }}</h6>
+    <a class="col m2 waves-effect waves-light btn mt1" v-on:click="isFormCompleted">Сканувати</a>
+    <h6 class="col m10 red-text text-darken-2 pt1">{{ massage }}</h6>
 
     <template v-if="qrVisible">
-    <div class="qrbox mt2">
-
+      <div class="col qrbox mt2">
         <qrcode-stream @init="onInit" @decode="onDecode"></qrcode-stream>
-
-    </div>
+      </div>
     </template>
 
     <InputComponent v-bind="inputQrCode" ref="inputQrCodeDetails"/>
 
     <template v-if="isComplitedForm">
-      <button class="btn waves-effect waves-light mt2" type="submit">
+      <button class="col btn waves-effect waves-light mt2" type="submit">
         Відправити
         <i class="material-icons right">send</i></button>
     </template>
@@ -156,5 +154,7 @@ export default {
   height: 20rem;
   border: 2px dotted red;
 }
-
+.pt1 {
+  padding-top: 1rem;
+}
 </style>
