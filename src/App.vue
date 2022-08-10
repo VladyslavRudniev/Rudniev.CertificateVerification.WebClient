@@ -1,14 +1,15 @@
 <template>
   <div id="app">
     <nav>
-      <router-link to="/" class="pl1">Додати сертифікат</router-link>
+      <router-link class="brand-logo left" to="/">Logo</router-link>
+      <ul class="right">
+        <li><router-link to="/CovidCertificate/">Cертифікати ковід</router-link></li>
+      </ul>
     </nav>
     <router-view/>
   </div>
 </template>
 
 <style scoped>
-  .pl1 {
-    padding-left: 1rem;
-  }
+
 </style>

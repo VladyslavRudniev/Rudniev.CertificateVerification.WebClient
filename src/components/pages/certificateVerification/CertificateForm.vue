@@ -1,11 +1,11 @@
 <template>
-  <form @submit.prevent="formSubmit">
+  <form class="row" @submit.prevent="formSubmit">
 
     <h4>Бланк додавання сертифіката ковід</h4>
 
-    <InputComponent v-bind="inputName" ref="inputNameDetails"/>
-    <InputComponent v-bind="inputSurname" ref="inputSurnameDetails"/>
-    <InputComponent v-bind="inputBirthdate" ref="inputBirthdateDetails"/>
+    <InputComponent class="col s6" v-bind="inputName" ref="inputNameDetails"/>
+    <InputComponent class="col s6" v-bind="inputSurname" ref="inputSurnameDetails"/>
+    <InputComponent class="col s6" v-bind="inputBirthdate" ref="inputBirthdateDetails"/>
 
     <h5>Відскануйте qr-код</h5>
 
