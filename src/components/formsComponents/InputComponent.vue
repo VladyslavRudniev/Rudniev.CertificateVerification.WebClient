@@ -12,6 +12,11 @@
 <script>
 export default {
   name: 'Navbar',
+  data: function () {
+    return {
+      value: ""
+    }
+  },
   props: {
     type: {
       type: String,
@@ -35,11 +40,6 @@ export default {
       type: String,
       require: true,
       default: "Заповніть поле:"
-    }
-  },
-  data: function () {
-    return {
-      value: ""
     }
   }
 

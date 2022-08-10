@@ -79,7 +79,7 @@ export default {
     }
   },
   methods: {
-    isFormCompleted: function () {
+    isFormCompleted () {
       if (this.$refs.inputNameDetails.value !== ""
           && this.$refs.inputSurnameDetails.value !== ""
           && this.$refs.inputBirthdateDetails.value !== "")
@@ -121,7 +121,7 @@ export default {
       }
     },
     async formSubmit() {
-      const result = await fetch('http://localhost:5275/api/certificate', {
+      const result = await fetch('https://localhost:7275/api/certificate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -133,7 +133,7 @@ export default {
           birthdate: this.$refs.inputBirthdateDetails.value,
           certificatenumber: this.$refs.inputQrCodeDetails.value
         })
-      });
+      })
       console.log(result);
       if (result.statusCode === 200)
       {
