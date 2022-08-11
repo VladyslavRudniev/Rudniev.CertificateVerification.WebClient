@@ -18,8 +18,14 @@
 export default {
   name: "TableComponent",
   props: {
-    info: null,
-    titles: null,
+    info: {
+      type: Array,
+      required: false,
+    },
+    titles: {
+      type: Array,
+      required: true,
+    }
   },
   data: function () {
     return {

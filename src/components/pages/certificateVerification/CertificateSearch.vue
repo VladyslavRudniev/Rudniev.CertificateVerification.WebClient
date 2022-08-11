@@ -1,37 +1,76 @@
 <template>
   <div>
     <h4>Пошук сертифікату</h4>
+
     <table-component class="mb1" :info="visibleList" :titles="titles"/>
-    <a class="waves-effect waves-light btn-small" @click="decreasePage">назад</a>
-    Сторінка {{pageNumber+1}} із {{pages}}
-    <a class="waves-effect waves-light btn-small" @click="increasePage">вперед</a>
+
+
+      <a class="waves-effect waves-light btn-small" @click="decreasePage">назад</a>
+      Сторінка {{ pageNumber + 1 }} із {{ pages }}
+      <a class="waves-effect waves-light btn-small" @click="increasePage">вперед</a>
+
+    <select v-model="itemsCount">
+      <option>6</option>
+      <option>10</option>
+      <option>20</option>
+      <option>30</option>
+    </select>
+
+    <input-component class="col" v-bind="inputSearchParam" v-on:valuechange="changeSearchParam" />
+
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import TableComponent from "@/components/otherComponents/TableComponent";
+import InputComponent from "@/components/formsComponents/InputComponent";
 
 export default {
   name: "CertificateSearch",
   components: {
-    TableComponent
+    TableComponent,
+    InputComponent
   },
   data: function() {
     return {
       info: [],
       tempInfo: [],
       pageNumber: 0,
-      titles: ["ім'я", "фамілія", "день народження", "номер сертифікату"]
+      itemsCount: 10,
+      titles: ["ім'я", "фамілія", "день народження", "номер сертифікату"],
+      inputSearchParam: {
+        type: "text",
+        id: "surname",
+        name: "surname",
+        placeholder: "ім'я або фамілія",
+        labelText: "Пошук:"
+      },
+      searchParam: "",
     }
   },
   computed: {
     visibleList: function (){
-      return this.info.slice(this.pageNumber*10, (this.pageNumber+1)*10);
+      if (this.searchParam === "")
+        return this.info.slice(this.pageNumber*this.itemsCount, (this.pageNumber+1)*this.itemsCount);
+      else
+      {
+        let tempArray = [];
+        let regexp = new RegExp(`${this.searchParam}`, "iu");
+        for (const item of this.info)
+        {
+          if (regexp.test(item.surname) || regexp.test(item.name))
+          {
+            tempArray.push(item);
+          }
+        }
+        this.tempInfo =  tempArray.slice(this.pageNumber*this.itemsCount, (this.pageNumber+1)*this.itemsCount);
+        return this.tempInfo;
+      }
     },
     pages: function (){
-      let res = parseInt(this.info.length / 10);
-      if (this.info.length % 10 !== 0)
+      let res = parseInt(String(this.info.length / this.itemsCount));
+      if (this.info.length % this.itemsCount !== 0)
         res++;
       return res;
     }
@@ -44,6 +83,9 @@ export default {
     increasePage () {
       if (this.pageNumber < this.pages-1)
         this.pageNumber++;
+    },
+    changeSearchParam: function (value) {
+      this.searchParam = value;
     }
   },
   async created() {

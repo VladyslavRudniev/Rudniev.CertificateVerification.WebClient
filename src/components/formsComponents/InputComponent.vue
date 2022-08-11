@@ -4,7 +4,8 @@
     <input :type="type"
            :id="id"
            :name="name"
-           v-model.lazy.trim="value"
+           v-model.trim="value"
+           v-on:input="onValueChange"
            :placeholder="placeholder" />
   </div>
 </template>
@@ -41,8 +42,12 @@ export default {
       require: true,
       default: "Заповніть поле:"
     }
+  },
+  methods: {
+    onValueChange: function () {
+      this.$emit('valuechange', this.value);
+    }
   }
-
 };
 </script>
 
