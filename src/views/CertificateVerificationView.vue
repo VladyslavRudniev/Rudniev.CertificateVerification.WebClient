@@ -28,6 +28,6 @@ export default {
 
 <style scoped>
 .sidebar {
-  height: 100vh;
+  min-height: 85vh;
 }
 </style>
