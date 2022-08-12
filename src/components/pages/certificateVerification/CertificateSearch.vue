@@ -57,7 +57,8 @@ export default {
           }
         }
         this.tempInfo =  tempArray;
-        this.pageNumber = 0;
+        if (this.pageNumber >= this.pages)
+          this.pageNumber = 0;
         return this.tempInfo.slice(this.pageNumber*this.itemsCount, (this.pageNumber+1)*this.itemsCount);
       }
     },
