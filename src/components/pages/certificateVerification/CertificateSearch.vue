@@ -2,7 +2,7 @@
   <div>
     <h4>Пошук сертифікату</h4>
 
-    <table-component class="mb1" :info="visibleList" :titles="titles"/>
+    <table-component class="mb1" :info="visibleList" :titles="titles" :entity-id-name="'patientId'"/>
 
     <a class="waves-effect waves-light btn-small" @click="decreasePage">назад</a>
     Сторінка {{ pageNumber + 1 }} із {{ pages }}
@@ -30,7 +30,7 @@ export default {
       tempInfo: [],
       pageNumber: 0,
       itemsCount: 10,
-      titles: ["ім'я", "фамілія", "день народження", "номер сертифікату"],
+      titles: ["№", "ім'я", "фамілія", "день народження", "номер сертифікату"],
       inputSearchParam: {
         type: "text",
         id: "surname",
