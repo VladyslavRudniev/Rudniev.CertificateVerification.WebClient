@@ -7,7 +7,7 @@
     </thead>
 
     <tbody>
-    <tr v-for="(item, index1) in info">
+    <tr v-for="(item, index1) in info" @click="OnClickTable(item)">
       <td v-for="(value, index2) in item">{{ index2 === entityIdName ? index1+1 : value }}</td>
     </tr>
     </tbody>
@@ -33,6 +33,11 @@ export default {
   },
   data: function () {
     return {
+    }
+  },
+  methods: {
+    OnClickTable (value) {
+      this.$emit('valuechange', value);
     }
   }
 }

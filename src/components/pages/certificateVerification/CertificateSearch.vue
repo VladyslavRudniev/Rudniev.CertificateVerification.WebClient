@@ -2,13 +2,20 @@
   <div>
     <h4>Пошук сертифікату</h4>
 
-    <table-component class="mb1" :info="visibleList" :titles="titles" :entity-id-name="'patientId'"/>
+    <table-component class="mb1"
+                     :info="visibleList"
+                     :titles="titles"
+                     :entity-id-name="'patientId'"
+                     v-on:valuechange="changePatientsInfo"
+    />
 
     <a class="waves-effect waves-light btn-small" @click="decreasePage">назад</a>
     Сторінка {{ pageNumber + 1 }} із {{ pages }}
     <a class="waves-effect waves-light btn-small" @click="increasePage">вперед</a>
 
     <input-component class="col" v-bind="inputSearchParam" v-on:valuechange="changeSearchParam"/>
+
+    <h6>Натисніть на рядок, щоб оновити дані</h6>
 
   </div>
 </template>
@@ -87,7 +94,10 @@ export default {
     },
     changeSearchParam: function (value) {
       this.searchParam = value;
-    }
+    },
+    changePatientsInfo: function (value) {
+      this.$emit('valuechange', value);
+    },
   },
   async created() {
     await axios.get('https://localhost:7275/api/certificate')

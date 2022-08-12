@@ -56,7 +56,7 @@ export default {
         type: "text",
         id: "surname",
         name: "surname",
-        placeholder: "Введіть фамілію пацієнта:",
+        placeholder: "Введіть фамілію пацієнта",
         labelText: "Введіть фамілію пацієнта:"
       },
       inputBirthdate: {
@@ -156,11 +156,11 @@ export default {
           }
           else
           {
-            window.alert("Сталась помилка, спробуйте пізніше!");
             const error = response.statusText;
             return Promise.reject(error);
           }
         }).catch(error => {
+          window.alert("Сталась помилка, спробуйте пізніше!");
           console.error("<<<ERROR>>>", error);
         });
       }
