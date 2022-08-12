@@ -4,19 +4,11 @@
 
     <table-component class="mb1" :info="visibleList" :titles="titles"/>
 
+    <a class="waves-effect waves-light btn-small" @click="decreasePage">назад</a>
+    Сторінка {{ pageNumber + 1 }} із {{ pages }}
+    <a class="waves-effect waves-light btn-small" @click="increasePage">вперед</a>
 
-      <a class="waves-effect waves-light btn-small" @click="decreasePage">назад</a>
-      Сторінка {{ pageNumber + 1 }} із {{ pages }}
-      <a class="waves-effect waves-light btn-small" @click="increasePage">вперед</a>
-
-    <select v-model="itemsCount">
-      <option>6</option>
-      <option>10</option>
-      <option>20</option>
-      <option>30</option>
-    </select>
-
-    <input-component class="col" v-bind="inputSearchParam" v-on:valuechange="changeSearchParam" />
+    <input-component class="col" v-bind="inputSearchParam" v-on:valuechange="changeSearchParam"/>
 
   </div>
 </template>
@@ -64,15 +56,23 @@ export default {
             tempArray.push(item);
           }
         }
-        this.tempInfo =  tempArray.slice(this.pageNumber*this.itemsCount, (this.pageNumber+1)*this.itemsCount);
-        return this.tempInfo;
+        this.tempInfo =  tempArray;
+        this.pageNumber = 0;
+        return this.tempInfo.slice(this.pageNumber*this.itemsCount, (this.pageNumber+1)*this.itemsCount);
       }
     },
-    pages: function (){
-      let res = parseInt(String(this.info.length / this.itemsCount));
-      if (this.info.length % this.itemsCount !== 0)
-        res++;
-      return res;
+    pages: function () {
+      let result;
+      if (this.searchParam === "") {
+         result = Math.floor(this.info.length / this.itemsCount);
+        if (this.info.length % this.itemsCount !== 0)
+          result++;
+      } else {
+        result = Math.floor(this.tempInfo.length / this.itemsCount);
+        if (this.tempInfo.length % this.itemsCount !== 0)
+          result++;
+      }
+      return result;
     }
   },
   methods: {

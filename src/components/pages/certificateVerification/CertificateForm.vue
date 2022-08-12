@@ -85,6 +85,10 @@ export default {
         this.massage = "";
         this.qrVisible = true;
       }
+      else if (this.$refs.inputBirthdateDetails.value === "")
+      {
+        this.massage = "Введіть дату народження, можливо введена невірна дата";
+      }
       else
       {
         this.massage = "Спочатку введіть всі данні до форми";
@@ -119,32 +123,51 @@ export default {
       }
     },
     async formSubmit() {
-      await fetch('https://localhost:7275/api/certificate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          name: this.$refs.inputNameDetails.value,
-          surname: this.$refs.inputSurnameDetails.value,
-          birthdate: this.$refs.inputBirthdateDetails.value,
-          certificatenumber: this.$refs.inputQrCodeDetails.value
-        })
-      }).then(response => {
-        if (response.ok)
-        {
-          window.alert("Дані успішно додано!");
-        }
-        else
-        {
-          window.alert("Сталась помилка, спробуйте пізніше!");
-          const error = response.statusText;
-          return Promise.reject(error);
-        }
-      }).catch(error => {
-        console.error("<<<ERROR>>>", error);
-      });
+      if (this.$refs.inputNameDetails.value !== ""
+          && this.$refs.inputSurnameDetails.value !== ""
+          && this.$refs.inputBirthdateDetails.value !== ""
+          && this.$refs.inputQrCodeDetails.value !== "")
+      {
+        this.isComplitedForm = false;
+        this.massage = "Відправка даних... Зачекайте";
+
+        await fetch('https://localhost:7275/api/certificate', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          credentials: 'include',
+          body: JSON.stringify({
+            name: this.$refs.inputNameDetails.value,
+            surname: this.$refs.inputSurnameDetails.value,
+            birthdate: this.$refs.inputBirthdateDetails.value,
+            certificatenumber: this.$refs.inputQrCodeDetails.value
+          })
+        }).then(response => {
+          if (response.ok)
+          {
+            this.massage = "";
+            this.$refs.inputNameDetails.value = "";
+            this.$refs.inputSurnameDetails.value = "";
+            this.$refs.inputBirthdateDetails.value = "";
+            this.$refs.inputQrCodeDetails.value = "";
+            this.qrVisible = false;
+            window.alert("Дані успішно додано!");
+          }
+          else
+          {
+            window.alert("Сталась помилка, спробуйте пізніше!");
+            const error = response.statusText;
+            return Promise.reject(error);
+          }
+        }).catch(error => {
+          console.error("<<<ERROR>>>", error);
+        });
+      }
+      else
+      {
+        this.massage = "Спочатку введіть всі данні до форми!";
+      }
     }
   }
 };
