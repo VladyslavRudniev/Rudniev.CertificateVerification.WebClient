@@ -160,6 +160,8 @@ export default {
             return Promise.reject(error);
           }
         }).catch(error => {
+          this.massage = "";
+          this.qrVisible = false;
           window.alert("Сталась помилка, спробуйте пізніше!");
           console.error("<<<ERROR>>>", error);
         });

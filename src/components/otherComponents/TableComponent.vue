@@ -37,7 +37,12 @@ export default {
   },
   methods: {
     OnClickTable (value) {
-      this.$emit('valuechange', value);
+      let temp = [];
+      for (let prop in value)
+      {
+        temp.push(value[prop])
+      }
+      this.$emit('valuechange', temp);
     }
   }
 }

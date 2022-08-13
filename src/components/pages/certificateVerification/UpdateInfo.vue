@@ -3,6 +3,7 @@
 
     <h4>Змініть дані на актуальні</h4>
 
+    <InputComponent v-bind="inputId" ref="inputIdDetails"/>
     <InputComponent class="col s12 m6" v-bind="inputName" ref="inputNameDetails"/>
     <InputComponent class="col s12 m6" v-bind="inputSurname" ref="inputSurnameDetails"/>
     <InputComponent class="col s12 m6" v-bind="inputBirthdate" ref="inputBirthdateDetails"/>
@@ -23,7 +24,7 @@ export default {
   name: "UpdateInfo",
   props: {
     entity: {
-      type: Object,
+      type: Array,
       required: true,
     },
   },
@@ -61,12 +62,20 @@ export default {
         placeholder: "Введіть qr-код",
         labelText: "Введіть qr-код:"
       },
+      inputId: {
+        type: "hidden",
+        id: "",
+        name: "Id",
+        placeholder: "",
+        labelText: ""
+      },
       errors: []
     }
   },
   methods: {
     async formSubmit() {
-      if (this.$refs.inputNameDetails.value !== ""
+      if (this.$refs.inputIdDetails.value !== ""
+          && this.$refs.inputNameDetails.value !== ""
           && this.$refs.inputSurnameDetails.value !== ""
           && this.$refs.inputBirthdateDetails.value !== ""
           && this.$refs.inputQrCodeDetails.value !== "") {
@@ -79,7 +88,7 @@ export default {
           },
           credentials: 'include',
           body: JSON.stringify({
-            patientid: this.entity.patientid,
+            patientid: this.$refs.inputIdDetails.value,
             name: this.$refs.inputNameDetails.value,
             surname: this.$refs.inputSurnameDetails.value,
             birthdate: this.$refs.inputBirthdateDetails.value,
@@ -88,6 +97,7 @@ export default {
         }).then(response => {
           if (response.ok) {
             this.massage = "";
+            this.$refs.inputIdDetails.value = "";
             this.$refs.inputNameDetails.value = "";
             this.$refs.inputSurnameDetails.value = "";
             this.$refs.inputBirthdateDetails.value = "";
@@ -98,6 +108,7 @@ export default {
             return Promise.reject(error);
           }
         }).catch(error => {
+          this.massage = "";
           console.error("<<<ERROR>>>", error);
           window.alert("Сталась помилка, спробуйте пізніше!");
         });
@@ -107,10 +118,11 @@ export default {
     }
   },
   mounted() {
-    this.$refs.inputNameDetails.value = this.entity.name;
-    this.$refs.inputSurnameDetails.value = this.entity.surname;
-    this.$refs.inputBirthdateDetails.value = this.entity.birthdate;
-    this.$refs.inputQrCodeDetails.value = this.entity.certificatenumber;
+    this.$refs.inputIdDetails.value = this.entity.shift();
+    this.$refs.inputNameDetails.value = this.entity.shift();
+    this.$refs.inputSurnameDetails.value = this.entity.shift();
+    this.$refs.inputBirthdateDetails.value = this.entity.shift();
+    this.$refs.inputQrCodeDetails.value = this.entity.shift();
   }
 }
 </script>
