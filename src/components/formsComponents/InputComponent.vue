@@ -4,7 +4,8 @@
     <input :type="type"
            :id="id"
            :name="name"
-           v-model.trim="value"
+           :value="name"
+           v-model.trim="type === 'radio' ? radio : value"
            v-on:input="onValueChange"
            :placeholder="placeholder" />
   </div>
@@ -15,7 +16,8 @@ export default {
   name: 'Navbar',
   data: function () {
     return {
-      value: ""
+      value: "",
+      radio: "",
     }
   },
   props: {

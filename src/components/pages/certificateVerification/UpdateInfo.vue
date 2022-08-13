@@ -103,6 +103,7 @@ export default {
             this.$refs.inputBirthdateDetails.value = "";
             this.$refs.inputQrCodeDetails.value = "";
             window.alert("Дані успішно оновлено!");
+            this.$emit('valuechange');
           } else {
             const error = response.statusText;
             return Promise.reject(error);
