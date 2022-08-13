@@ -10,16 +10,11 @@
                        v-else-if="numberOfSection === 1"
                        v-on:valuechange="changePatientsInfo"
     />
-    <template v-else-if="numberOfSection === 3">
-      <UpdateInfo class="col s9 m9 l8 19"
-                  :entity="entityinfo"
-                  v-on:valuechange="backToSearch"
-      />
-      <CertificateDelete class="col s9 m9 l8 19"
-                         :entity="entityid"
-                         v-on:valuechange="backToSearch"
-      />
-    </template>
+    <UpdateInfo class="col s9 m9 l8 19"
+                :entity="entityinfo"
+                v-else-if="numberOfSection === 3"
+                v-on:valuechange="backToSearch"
+    />
   </div>
 </template>
 
@@ -28,7 +23,6 @@ import CertificateForm from '@/components/pages/certificateVerification/Certific
 import Sidebar from "@/components/pages/certificateVerification/Sidebar";
 import CertificateSearch from "@/components/pages/certificateVerification/CertificateSearch";
 import UpdateInfo from "@/components/pages/certificateVerification/UpdateInfo";
-import CertificateDelete from "@/components/pages/certificateVerification/CertificateDelete";
 
 export default {
   name: 'CertificateVerificationView',
@@ -37,19 +31,16 @@ export default {
     CertificateSearch,
     Sidebar,
     UpdateInfo,
-    CertificateDelete,
   },
   data: function() {
     return {
       numberOfSection: 2,
       entityinfo: [],
-      entityid: "",
     }
   },
   methods: {
     changePatientsInfo: function (value) {
       this.entityinfo = Object.assign([], value);
-      this.entityid = value[0];
       this.numberOfSection = 3;
     },
     backToSearch: function () {

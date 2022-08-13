@@ -1,20 +1,31 @@
 <template>
-  <form class="row" @submit.prevent="formSubmit">
+  <div>
+    <form class="row" @submit.prevent="formSubmit">
 
-    <h4>Змініть дані на актуальні</h4>
+      <h4>Змініть дані на актуальні</h4>
 
-    <InputComponent v-bind="inputId" ref="inputIdDetails"/>
-    <InputComponent class="col s12 m6" v-bind="inputName" ref="inputNameDetails"/>
-    <InputComponent class="col s12 m6" v-bind="inputSurname" ref="inputSurnameDetails"/>
-    <InputComponent class="col s12 m6" v-bind="inputBirthdate" ref="inputBirthdateDetails"/>
-    <InputComponent class="col s12 m6" v-bind="inputQrCode" ref="inputQrCodeDetails"/>
+      <InputComponent class="col s12 m6" v-bind="inputName" ref="inputNameDetails"/>
+      <InputComponent class="col s12 m6" v-bind="inputSurname" ref="inputSurnameDetails"/>
+      <InputComponent class="col s12 m6" v-bind="inputBirthdate" ref="inputBirthdateDetails"/>
+      <InputComponent class="col s12 m6" v-bind="inputQrCode" ref="inputQrCodeDetails"/>
 
-    <h6 class="col m10 red-text text-darken-2 pt1">{{ massage }}</h6>
+      <h6 class="col m10 red-text text-darken-2 pt1">{{ massage }}</h6>
 
-    <button class="col btn waves-effect waves-light mt2" type="submit">
-      Оновити дані<i class="material-icons right">send</i></button>
+      <button class="col btn waves-effect waves-light mt2" type="submit">
+        Оновити дані<i class="material-icons right">send</i></button>
 
-  </form>
+    </form>
+    <form class="row" @submit.prevent="formSubmit2">
+
+      <h4>Або видаліть дані із бази</h4>
+
+      <h6 class="col m10 red-text text-darken-2 pt1">{{ massage2 }}</h6>
+
+      <button class="col btn waves-effect waves-light mt2" type="submit">
+        Видалити дані<i class="material-icons right">send</i></button>
+
+    </form>
+  </div>
 </template>
 
 <script>
@@ -33,7 +44,9 @@ export default {
   },
   data: function () {
     return {
+      patientId: "",
       massage: "",
+      massage2: "",
       inputName: {
         type: "text",
         id: "name",
@@ -74,8 +87,7 @@ export default {
   },
   methods: {
     async formSubmit() {
-      if (this.$refs.inputIdDetails.value !== ""
-          && this.$refs.inputNameDetails.value !== ""
+      if (this.$refs.inputNameDetails.value !== ""
           && this.$refs.inputSurnameDetails.value !== ""
           && this.$refs.inputBirthdateDetails.value !== ""
           && this.$refs.inputQrCodeDetails.value !== "") {
@@ -88,7 +100,7 @@ export default {
           },
           credentials: 'include',
           body: JSON.stringify({
-            patientid: this.$refs.inputIdDetails.value,
+            patientid: this.patientId,
             name: this.$refs.inputNameDetails.value,
             surname: this.$refs.inputSurnameDetails.value,
             birthdate: this.$refs.inputBirthdateDetails.value,
@@ -97,7 +109,6 @@ export default {
         }).then(response => {
           if (response.ok) {
             this.massage = "";
-            this.$refs.inputIdDetails.value = "";
             this.$refs.inputNameDetails.value = "";
             this.$refs.inputSurnameDetails.value = "";
             this.$refs.inputBirthdateDetails.value = "";
@@ -116,10 +127,36 @@ export default {
       } else {
         this.massage = "Спочатку введіть всі данні до форми!";
       }
+    },
+    async formSubmit2() {
+      this.massage2 = "Відправка даних... Зачекайте";
+
+      await fetch('https://localhost:7275/api/certificate', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          patientid: this.patientId,
+        })
+      }).then(response => {
+        if (response.ok) {
+          this.massage2 = "";
+          window.alert("Дані успішно видалено!");
+          this.$emit('valuechange');
+        } else {
+          const error = response.statusText;
+          return Promise.reject(error);
+        }
+      }).catch(error => {
+        this.massage = "";
+        console.error("<<<ERROR>>>", error);
+        window.alert("Сталась помилка, спробуйте пізніше!");
+      });
     }
   },
   mounted() {
-    this.$refs.inputIdDetails.value = this.entity.shift();
+    this.patientId = this.entity.shift();
     this.$refs.inputNameDetails.value = this.entity.shift();
     this.$refs.inputSurnameDetails.value = this.entity.shift();
     this.$refs.inputBirthdateDetails.value = this.entity.shift();
